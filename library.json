@@ -1,0 +1,20 @@
+{
+  "name": "rmtt-cpp-8266",
+  "version": "0.1.0",
+  "description": "RMTT (Remote Message Telemetry Transport - MQTT-like) client library for ESP8266. TCP always; TLS optional via the RMTT_USE_TLS macro.",
+  "keywords": ["rmtt", "mqtt", "iot", "tcp", "tls", "esp8266", "protocol"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "czqu",
+      "email": "me@czqu.net",
+      "maintainer": true
+    }
+  ],
+  "frameworks": ["arduino"],
+  "platforms": ["espressif8266"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/czqu/rmtt-cpp-8266.git"
+  }
+}

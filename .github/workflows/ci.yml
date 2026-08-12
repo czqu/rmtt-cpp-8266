@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.tls }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tls:
+          - tcp-only
+          - tls
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PlatformIO
+        run: pip install -U platformio
+
+      - name: Select env
+        id: env
+        run: |
+          if [ "${{ matrix.tls }}" = "tls" ]; then
+            echo "name=esp8266-tls" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=esp8266-tcp" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build ESP8266 library example
+        run: pio run -d examples/demo -e ${{ steps.env.outputs.name }}
+
+  validate:
+    name: Validate package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PlatformIO
+        run: pip install -U platformio
+
+      - name: Pack library
+        run: pio pkg pack
